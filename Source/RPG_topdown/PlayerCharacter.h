@@ -29,4 +29,7 @@ public:
 private:
 	void MoveVertical(float AxisValue);
 	void MoveHorizontal(float AxisValue);
+
+	FRotator CurrentRotation;
+
 };
