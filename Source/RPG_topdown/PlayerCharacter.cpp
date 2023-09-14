@@ -15,21 +15,13 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	SetActorRotation(CurrentRotation);
-	//UE_LOG(LogTemp, Warning, TEXT("Current rotation = %s vs ActorRotation = %s"), *CurrentRotation.ToString(), *GetActorRotation().ToString());
 }
 
 // Called every frame
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	FVector Velocity = GetVelocity().GetSafeNormal();
-	if (FMath::Abs(Velocity.X) > 0.2f || FMath::Abs(Velocity.Y) > 0.2f)
-	{
-		CurrentRotation = Velocity.Rotation();
-	}
-	SetActorRotation(CurrentRotation);
-	//UE_LOG(LogTemp, Warning, TEXT("Current rotation = %s vs ActorRotation = %s"), *CurrentRotation.ToString(), *GetActorRotation().ToString());
+	RotateCharacter(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -45,14 +37,28 @@ void APlayerCharacter::MoveVertical(float AxisValue)
 {
 	FVector VerticalMovement = FVector::ForwardVector * AxisValue;
 	if (VerticalMovement.Length() > 0.25f)
+	{
 		AddMovementInput(VerticalMovement);
+	}
 }
 
 void APlayerCharacter::MoveHorizontal(float AxisValue)
 {
 	FVector HorizontalMovement = FVector::RightVector * AxisValue;
 	if (HorizontalMovement.Length() > 0.25f)
+	{
 		AddMovementInput(HorizontalMovement);
+	}
+}
+
+void APlayerCharacter::RotateCharacter(float DeltaTime)
+{
+	FVector Velocity = GetVelocity().GetSafeNormal();
+	if (FMath::Abs(Velocity.X) > 0.2f || FMath::Abs(Velocity.Y) > 0.2f)
+	{
+		CurrentRotation = Velocity.Rotation();
+	}
+	SetActorRotation(CurrentRotation);
 }
 
 

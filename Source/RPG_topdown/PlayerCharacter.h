@@ -29,7 +29,12 @@ public:
 private:
 	void MoveVertical(float AxisValue);
 	void MoveHorizontal(float AxisValue);
+	void RotateCharacter(float DeltaTime);
 
 	FRotator CurrentRotation;
+	FRotator TargetRotation;
+
+	UPROPERTY(EditAnywhere)
+	float RotationSpeed = 0.5f;
 
 };
