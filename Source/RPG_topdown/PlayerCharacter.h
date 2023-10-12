@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
+class UCameraComponent;
+
 UCLASS()
 class RPG_TOPDOWN_API APlayerCharacter : public ACharacter
 {
@@ -25,6 +27,14 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(VisibleAnywhere)
+	TArray<UCameraComponent*> Allcameras;
+
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* MainCamera;
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* PhotoCamera;
 
 private:
 	void MoveVertical(float AxisValue);

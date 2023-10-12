@@ -2,6 +2,7 @@
 
 
 #include "PlayerCharacter.h"
+#include "Camera/CameraComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -15,6 +16,16 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	SetActorRotation(CurrentRotation);
+
+	//MainCamera = Cast<UCameraComponent>(GetOwner()->GetComponentByClass(UCameraComponent::StaticClass()));
+	MainCamera = Cast<UCameraComponent>(GetDefaultSubobjectByName(TEXT("TopDown_Camera")));
+	PhotoCamera = Cast<UCameraComponent>(GetDefaultSubobjectByName(TEXT("PhotoMode_Camera")));
+
+	if (MainCamera == nullptr)
+		UE_LOG(LogTemp, Warning, TEXT("MainCamera NULL POINTER"));
+
+	if (PhotoCamera == nullptr)
+		UE_LOG(LogTemp, Warning, TEXT("PhotoCamera NULL POINTER"));
 }
 
 // Called every frame
