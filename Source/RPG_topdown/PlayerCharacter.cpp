@@ -31,6 +31,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	PlayerInputComponent->BindAxis(TEXT("MoveVertical"), this, &APlayerCharacter::MoveVertical);
 	PlayerInputComponent->BindAxis(TEXT("MoveHorizontal"), this, &APlayerCharacter::MoveHorizontal);
+
+	PlayerInputComponent->BindAction(TEXT("PhotoMode"), EInputEvent::IE_Pressed, this, &APlayerCharacter::SwitchPhotoMode);
 }
 
 void APlayerCharacter::MoveVertical(float AxisValue)
@@ -59,6 +61,12 @@ void APlayerCharacter::RotateCharacter(float DeltaTime)
 		CurrentRotation = Velocity.Rotation();
 	}
 	SetActorRotation(CurrentRotation);
+}
+
+void APlayerCharacter::SwitchPhotoMode()
+{
+	IsPhotoMode = !IsPhotoMode;
+	UE_LOG(LogTemp, Warning, TEXT("IsPhotoMode = %s"), IsPhotoMode ? TEXT("True") : TEXT("False"));
 }
 
 

@@ -31,10 +31,14 @@ private:
 	void MoveHorizontal(float AxisValue);
 	void RotateCharacter(float DeltaTime);
 
+	void SwitchPhotoMode();
+
 	FRotator CurrentRotation;
 	FRotator TargetRotation;
 
 	UPROPERTY(EditAnywhere)
 	float RotationSpeed = 0.5f;
+
+	bool IsPhotoMode = false;
 
 };
