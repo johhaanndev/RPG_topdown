@@ -3,6 +3,7 @@
 
 #include "PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -19,13 +20,17 @@ void APlayerCharacter::BeginPlay()
 
 	//MainCamera = Cast<UCameraComponent>(GetOwner()->GetComponentByClass(UCameraComponent::StaticClass()));
 	MainCamera = Cast<UCameraComponent>(GetDefaultSubobjectByName(TEXT("TopDown_Camera")));
-	PhotoCamera = Cast<UCameraComponent>(GetDefaultSubobjectByName(TEXT("PhotoMode_Camera")));
+	CameraSpringArm = Cast<USpringArmComponent>(GetDefaultSubobjectByName(TEXT("CameraSpringArm")));
 
 	if (MainCamera == nullptr)
 		UE_LOG(LogTemp, Warning, TEXT("MainCamera NULL POINTER"));
+	if (CameraSpringArm == nullptr)
+		UE_LOG(LogTemp, Warning, TEXT("CameraSpringArm NULL POINTER"));
 
-	if (PhotoCamera == nullptr)
-		UE_LOG(LogTemp, Warning, TEXT("PhotoCamera NULL POINTER"));
+	
+	TopDownCameraLocation = MainCamera->GetComponentLocation();
+	TopDownCameraRotation = MainCamera->GetComponentRotation();
+	PhotoCameraRotation = FRotator::ZeroRotator;
 }
 
 // Called every frame
@@ -78,6 +83,18 @@ void APlayerCharacter::SwitchPhotoMode()
 {
 	IsPhotoMode = !IsPhotoMode;
 	UE_LOG(LogTemp, Warning, TEXT("IsPhotoMode = %s"), IsPhotoMode ? TEXT("True") : TEXT("False"));
+
+	if (IsPhotoMode)
+	{
+		CameraSpringArm->TargetArmLength = -10.f;
+		PhotoCameraRotation = GetActorRotation();
+		CameraSpringArm->SetRelativeRotation(PhotoCameraRotation);
+	}
+	else
+	{
+		CameraSpringArm->TargetArmLength = 1000.f;
+		CameraSpringArm->SetRelativeRotation(TopDownCameraRotation);
+	}
 }
 
 

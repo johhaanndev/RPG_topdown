@@ -33,8 +33,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* MainCamera;
-	UPROPERTY(VisibleAnywhere)
-	UCameraComponent* PhotoCamera;
 
 private:
 	void MoveVertical(float AxisValue);
@@ -45,6 +43,16 @@ private:
 
 	FRotator CurrentRotation;
 	FRotator TargetRotation;
+
+	FVector TopDownCameraLocation;
+	FRotator TopDownCameraRotation;
+
+	FRotator PhotoCameraRotation;
+
+
+	class USpringArmComponent* CameraSpringArm;
+
+	float SpringArmLength;
 
 	UPROPERTY(EditAnywhere)
 	float RotationSpeed = 0.5f;
