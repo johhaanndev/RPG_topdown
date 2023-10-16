@@ -18,7 +18,6 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 	SetActorRotation(CurrentRotation);
 
-	//MainCamera = Cast<UCameraComponent>(GetOwner()->GetComponentByClass(UCameraComponent::StaticClass()));
 	MainCamera = Cast<UCameraComponent>(GetDefaultSubobjectByName(TEXT("TopDown_Camera")));
 	CameraSpringArm = Cast<USpringArmComponent>(GetDefaultSubobjectByName(TEXT("CameraSpringArm")));
 
@@ -100,7 +99,7 @@ void APlayerCharacter::LookUpRate(float AxisValue)
 	{
 		FRotator NewRotation = CameraSpringArm->GetRelativeRotation();
 		NewRotation.Pitch += -AxisValue * RotationRate * GetWorld()->GetDeltaSeconds();
-		NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch, -85.f, 85.f); // Opcional: Puedes agregar restricciones de límites si lo deseas.
+		NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch, -85.f, 85.f);
 		CameraSpringArm->SetRelativeRotation(NewRotation);
 	}
 }
@@ -120,7 +119,7 @@ void APlayerCharacter::ZoomIn(float AxisValue)
 	if (IsPhotoMode)
 	{
 		CurrentFOV -= ZoomSpeed * AxisValue;
-		CurrentFOV = FMath::Clamp(CurrentFOV, MinFOV, InitialFOV); // Limita el zoom al doble del FOV original
+		CurrentFOV = FMath::Clamp(CurrentFOV, MinFOV, InitialFOV);
 		if (AxisValue > 0.1f)
 			UE_LOG(LogTemp, Warning, TEXT("ZoomIn. CurrentFOV = %f"), CurrentFOV);
 		MainCamera->SetFieldOfView(CurrentFOV);
@@ -132,7 +131,7 @@ void APlayerCharacter::ZoomOut(float AxisValue)
 	if (IsPhotoMode)
 	{
 		CurrentFOV += ZoomSpeed * AxisValue;
-		CurrentFOV = FMath::Clamp(CurrentFOV, MinFOV, InitialFOV); // Limita el zoom al doble del FOV original
+		CurrentFOV = FMath::Clamp(CurrentFOV, MinFOV, InitialFOV);
 		if (AxisValue > 0.1f)
 			UE_LOG(LogTemp, Warning, TEXT("ZoomOut. CurrentFOV = %f"), CurrentFOV);
 		MainCamera->SetFieldOfView(CurrentFOV);
