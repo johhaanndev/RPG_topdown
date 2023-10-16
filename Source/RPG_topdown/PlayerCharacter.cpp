@@ -48,6 +48,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("MoveVertical"), this, &APlayerCharacter::MoveVertical);
 	PlayerInputComponent->BindAxis(TEXT("MoveHorizontal"), this, &APlayerCharacter::MoveHorizontal);
 
+	PlayerInputComponent->BindAxis(TEXT("LookUpRate"), this, &APlayerCharacter::LookUpRate);
+	PlayerInputComponent->BindAxis(TEXT("LookRightRate"), this, &APlayerCharacter::LookRightRate);
+
 	PlayerInputComponent->BindAction(TEXT("PhotoMode"), EInputEvent::IE_Pressed, this, &APlayerCharacter::SwitchPhotoMode);
 }
 
@@ -85,6 +88,27 @@ void APlayerCharacter::RotateCharacter(float DeltaTime)
 			CurrentRotation = Velocity.Rotation();
 		}
 		SetActorRotation(CurrentRotation);
+	}
+}
+
+void APlayerCharacter::LookUpRate(float AxisValue)
+{
+	if (IsPhotoMode)
+	{
+		FRotator NewRotation = CameraSpringArm->GetRelativeRotation();
+		NewRotation.Pitch += -AxisValue * RotationRate * GetWorld()->GetDeltaSeconds();
+		NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch, -85.f, 85.f); // Opcional: Puedes agregar restricciones de límites si lo deseas.
+		CameraSpringArm->SetRelativeRotation(NewRotation);
+	}
+}
+
+void APlayerCharacter::LookRightRate(float AxisValue)
+{
+	if (IsPhotoMode)
+	{
+		FRotator NewRotation = CameraSpringArm->GetRelativeRotation();
+		NewRotation.Yaw += AxisValue * RotationRate * GetWorld()->GetDeltaSeconds();
+		CameraSpringArm->SetRelativeRotation(NewRotation);
 	}
 }
 

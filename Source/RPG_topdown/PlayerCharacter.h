@@ -39,24 +39,29 @@ private:
 	void MoveHorizontal(float AxisValue);
 	void RotateCharacter(float DeltaTime);
 
+	void LookUpRate(float AxisValue);
+	void LookRightRate(float AxisValue);
+
 	void SwitchPhotoMode();
 
 	FRotator CurrentRotation;
 	FRotator TargetRotation;
+	
 
 	FVector TopDownCameraLocation;
 	FRotator TopDownCameraRotation;
 
 	FRotator PhotoCameraRotation;
 
-
 	class USpringArmComponent* CameraSpringArm;
 
 	float SpringArmLength;
-
+	
 	UPROPERTY(EditAnywhere)
 	float RotationSpeed = 0.5f;
+	
+	UPROPERTY(EditAnywhere)
+	float RotationRate = 50.f;
 
 	bool IsPhotoMode = false;
-
 };
