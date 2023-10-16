@@ -8,7 +8,7 @@
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
@@ -27,7 +27,7 @@ void APlayerCharacter::BeginPlay()
 	if (CameraSpringArm == nullptr)
 		UE_LOG(LogTemp, Warning, TEXT("CameraSpringArm NULL POINTER"));
 
-	
+
 	TopDownCameraLocation = MainCamera->GetComponentLocation();
 	TopDownCameraRotation = MainCamera->GetComponentRotation();
 	PhotoCameraRotation = FRotator::ZeroRotator;
@@ -53,30 +53,39 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlayerCharacter::MoveVertical(float AxisValue)
 {
-	FVector VerticalMovement = FVector::ForwardVector * AxisValue;
-	if (VerticalMovement.Length() > 0.25f)
+	if (!IsPhotoMode)
 	{
-		AddMovementInput(VerticalMovement);
+		FVector VerticalMovement = FVector::ForwardVector * AxisValue;
+		if (VerticalMovement.Length() > 0.25f)
+		{
+			AddMovementInput(VerticalMovement);
+		}
 	}
 }
 
 void APlayerCharacter::MoveHorizontal(float AxisValue)
 {
-	FVector HorizontalMovement = FVector::RightVector * AxisValue;
-	if (HorizontalMovement.Length() > 0.25f)
+	if (!IsPhotoMode)
 	{
-		AddMovementInput(HorizontalMovement);
+		FVector HorizontalMovement = FVector::RightVector * AxisValue;
+		if (HorizontalMovement.Length() > 0.25f)
+		{
+			AddMovementInput(HorizontalMovement);
+		}
 	}
 }
 
 void APlayerCharacter::RotateCharacter(float DeltaTime)
 {
-	FVector Velocity = GetVelocity().GetSafeNormal();
-	if (FMath::Abs(Velocity.X) > 0.2f || FMath::Abs(Velocity.Y) > 0.2f)
+	if (!IsPhotoMode)
 	{
-		CurrentRotation = Velocity.Rotation();
+		FVector Velocity = GetVelocity().GetSafeNormal();
+		if (FMath::Abs(Velocity.X) > 0.2f || FMath::Abs(Velocity.Y) > 0.2f)
+		{
+			CurrentRotation = Velocity.Rotation();
+		}
+		SetActorRotation(CurrentRotation);
 	}
-	SetActorRotation(CurrentRotation);
 }
 
 void APlayerCharacter::SwitchPhotoMode()
