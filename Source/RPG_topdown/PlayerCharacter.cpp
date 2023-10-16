@@ -51,6 +51,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("LookUpRate"), this, &APlayerCharacter::LookUpRate);
 	PlayerInputComponent->BindAxis(TEXT("LookRightRate"), this, &APlayerCharacter::LookRightRate);
 
+	PlayerInputComponent->BindAxis(TEXT("ZoomIn"), this, &APlayerCharacter::ZoomIn);
+	PlayerInputComponent->BindAxis(TEXT("Zoomout"), this, &APlayerCharacter::ZoomOut);
+
 	PlayerInputComponent->BindAction(TEXT("PhotoMode"), EInputEvent::IE_Pressed, this, &APlayerCharacter::SwitchPhotoMode);
 }
 
@@ -112,6 +115,30 @@ void APlayerCharacter::LookRightRate(float AxisValue)
 	}
 }
 
+void APlayerCharacter::ZoomIn(float AxisValue)
+{
+	if (IsPhotoMode)
+	{
+		CurrentFOV -= ZoomSpeed * AxisValue;
+		CurrentFOV = FMath::Clamp(CurrentFOV, MinFOV, InitialFOV); // Limita el zoom al doble del FOV original
+		if (AxisValue > 0.1f)
+			UE_LOG(LogTemp, Warning, TEXT("ZoomIn. CurrentFOV = %f"), CurrentFOV);
+		MainCamera->SetFieldOfView(CurrentFOV);
+	}
+}
+
+void APlayerCharacter::ZoomOut(float AxisValue)
+{
+	if (IsPhotoMode)
+	{
+		CurrentFOV += ZoomSpeed * AxisValue;
+		CurrentFOV = FMath::Clamp(CurrentFOV, MinFOV, InitialFOV); // Limita el zoom al doble del FOV original
+		if (AxisValue > 0.1f)
+			UE_LOG(LogTemp, Warning, TEXT("ZoomOut. CurrentFOV = %f"), CurrentFOV);
+		MainCamera->SetFieldOfView(CurrentFOV);
+	}
+}
+
 void APlayerCharacter::SwitchPhotoMode()
 {
 	IsPhotoMode = !IsPhotoMode;
@@ -120,12 +147,15 @@ void APlayerCharacter::SwitchPhotoMode()
 	if (IsPhotoMode)
 	{
 		CameraSpringArm->TargetArmLength = -10.f;
+		CurrentFOV = 90.0f;
+		MainCamera->SetFieldOfView(InitialFOV);
 		PhotoCameraRotation = GetActorRotation();
 		CameraSpringArm->SetRelativeRotation(PhotoCameraRotation);
 	}
 	else
 	{
 		CameraSpringArm->TargetArmLength = 1000.f;
+		MainCamera->SetFieldOfView(InitialFOV);
 		CameraSpringArm->SetRelativeRotation(TopDownCameraRotation);
 	}
 }

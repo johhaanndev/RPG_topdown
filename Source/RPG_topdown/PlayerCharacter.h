@@ -41,12 +41,13 @@ private:
 
 	void LookUpRate(float AxisValue);
 	void LookRightRate(float AxisValue);
+	void ZoomIn(float AxisValue);
+	void ZoomOut(float AxisValue);
 
 	void SwitchPhotoMode();
 
 	FRotator CurrentRotation;
 	FRotator TargetRotation;
-	
 
 	FVector TopDownCameraLocation;
 	FRotator TopDownCameraRotation;
@@ -62,6 +63,17 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 50.f;
+
+	UPROPERTY(EditAnywhere)
+	float ZoomSpeed = 0.5f;
+
+	UPROPERTY(EditAnywhere)
+	float InitialFOV = 90.f;
+
+	UPROPERTY(EditAnywhere)
+	float MinFOV = 35.f;
+
+	float CurrentFOV;
 
 	bool IsPhotoMode = false;
 };
