@@ -4,6 +4,8 @@
 #include "PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include <Kismet/GameplayStatics.h>
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -54,6 +56,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("Zoomout"), this, &APlayerCharacter::ZoomOut);
 
 	PlayerInputComponent->BindAction(TEXT("PhotoMode"), EInputEvent::IE_Pressed, this, &APlayerCharacter::SwitchPhotoMode);
+	PlayerInputComponent->BindAction(TEXT("TakePhoto"), EInputEvent::IE_Pressed, this, &APlayerCharacter::TakePhoto);
 }
 
 void APlayerCharacter::MoveVertical(float AxisValue)
@@ -120,8 +123,6 @@ void APlayerCharacter::ZoomIn(float AxisValue)
 	{
 		CurrentFOV -= ZoomSpeed * AxisValue;
 		CurrentFOV = FMath::Clamp(CurrentFOV, MinFOV, InitialFOV);
-		if (AxisValue > 0.1f)
-			UE_LOG(LogTemp, Warning, TEXT("ZoomIn. CurrentFOV = %f"), CurrentFOV);
 		MainCamera->SetFieldOfView(CurrentFOV);
 	}
 }
@@ -132,8 +133,6 @@ void APlayerCharacter::ZoomOut(float AxisValue)
 	{
 		CurrentFOV += ZoomSpeed * AxisValue;
 		CurrentFOV = FMath::Clamp(CurrentFOV, MinFOV, InitialFOV);
-		if (AxisValue > 0.1f)
-			UE_LOG(LogTemp, Warning, TEXT("ZoomOut. CurrentFOV = %f"), CurrentFOV);
 		MainCamera->SetFieldOfView(CurrentFOV);
 	}
 }
@@ -141,7 +140,6 @@ void APlayerCharacter::ZoomOut(float AxisValue)
 void APlayerCharacter::SwitchPhotoMode()
 {
 	IsPhotoMode = !IsPhotoMode;
-	UE_LOG(LogTemp, Warning, TEXT("IsPhotoMode = %s"), IsPhotoMode ? TEXT("True") : TEXT("False"));
 
 	if (IsPhotoMode)
 	{
@@ -156,6 +154,38 @@ void APlayerCharacter::SwitchPhotoMode()
 		CameraSpringArm->TargetArmLength = 1000.f;
 		MainCamera->SetFieldOfView(InitialFOV);
 		CameraSpringArm->SetRelativeRotation(TopDownCameraRotation);
+	}
+}
+
+void APlayerCharacter::TakePhoto()
+{
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+
+	if (PlayerController && IsPhotoMode)
+	{
+		// Genera la ruta completa del archivo de imagen.
+		FString FullFilePath = PhotosDirectory + "/" + FDateTime::Now().ToString(TEXT("%Y%m%d%H%M%S"));
+
+		// Ejecuta el comando HighResShot para capturar la pantalla.
+		FString Command = FString::Printf(TEXT("HighResShot 1920x1080"));
+		PlayerController->ConsoleCommand(Command, true);
+
+		//FPlatformProcess::Sleep(2.0f);
+
+		// Mueve el archivo a la ruta de destino.
+		IFileManager& FileManager = IFileManager::Get();
+		if (FileManager.Move(*FullFilePath, *FPaths::ScreenShotDir()))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Photo saved succesfully on: %s"), *FullFilePath);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Error saving the photo"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Photo only available on PhotoMode"));
 	}
 }
 

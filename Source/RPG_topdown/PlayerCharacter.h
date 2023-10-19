@@ -34,7 +34,12 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* MainCamera;
 
+	UPROPERTY(EditAnywhere)
+	FString PhotosDirectory = FPaths::ProjectDir() / TEXT("Photos");
+
 private:
+	const FString PhotoFilename = FString(TEXT("Photo_"));
+
 	void MoveVertical(float AxisValue);
 	void MoveHorizontal(float AxisValue);
 	void RotateCharacter(float DeltaTime);
@@ -45,6 +50,7 @@ private:
 	void ZoomOut(float AxisValue);
 
 	void SwitchPhotoMode();
+	void TakePhoto();
 
 	FRotator CurrentRotation;
 	FRotator TargetRotation;
