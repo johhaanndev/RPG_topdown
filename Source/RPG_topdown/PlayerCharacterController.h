@@ -16,4 +16,15 @@ class RPG_TOPDOWN_API APlayerCharacterController : public APlayerController
 
 public:
 	void ShowPhotoDisplayHUD();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+private:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> PhotosDisplayClass;
+
+	UPROPERTY(EditAnywhere)
+	UUserWidget* PhotosDisplay;
 };

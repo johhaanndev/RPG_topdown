@@ -22,6 +22,10 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+	
+	enum GameStates { Exploring, PhotoTaking, PhotoDisplaying };
+	GameStates GameState;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -87,4 +91,5 @@ private:
 	float CurrentFOV;
 
 	bool IsPhotoMode = false;
+
 };

@@ -20,6 +20,9 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GameState = GameStates::Exploring;
+	UE_LOG(LogTemp, Warning, TEXT("Initial state: %d"), GameState);
 	SetActorRotation(CurrentRotation);
 
 	MainCamera = Cast<UCameraComponent>(GetDefaultSubobjectByName(TEXT("TopDown_Camera")));
@@ -152,6 +155,7 @@ void APlayerCharacter::SwitchPhotoMode()
 
 	if (IsPhotoMode)
 	{
+		GameState = GameStates::PhotoTaking;
 		CameraSpringArm->TargetArmLength = -10.f;
 		CurrentFOV = 90.0f;
 		MainCamera->SetFieldOfView(InitialFOV);
@@ -161,10 +165,13 @@ void APlayerCharacter::SwitchPhotoMode()
 	}
 	else
 	{
+		GameState = GameStates::Exploring;
 		CameraSpringArm->TargetArmLength = 1000.f;
 		MainCamera->SetFieldOfView(InitialFOV);
 		CameraSpringArm->SetRelativeRotation(TopDownCameraRotation);
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Switched to state: %d"), GameState);
 }
 
 void APlayerCharacter::TakePhoto()
@@ -208,6 +215,8 @@ void APlayerCharacter::ShowPhotosDisplayHUD()
 	if (PlayerController)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("PlayerController found: %s"), *PlayerController->GetName());
+		GameState = GameStates::PhotoDisplaying;
+		UE_LOG(LogTemp, Warning, TEXT("Switched to state: %d"), GameState);
 		PlayerController->ShowPhotoDisplayHUD();
 	}
 	else
