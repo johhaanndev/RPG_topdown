@@ -113,6 +113,11 @@ void APlayerCharacter::LookRightRate(float AxisValue)
 	{
 		FRotator NewRotation = CameraSpringArm->GetRelativeRotation();
 		NewRotation.Yaw += AxisValue * RotationRate * GetWorld()->GetDeltaSeconds();
+		NewRotation.Yaw = FMath::Clamp(
+										NewRotation.Yaw, 
+										-MaxRotationAngle,
+										MaxRotationAngle
+									);
 		CameraSpringArm->SetRelativeRotation(NewRotation);
 	}
 }
@@ -148,6 +153,7 @@ void APlayerCharacter::SwitchPhotoMode()
 		MainCamera->SetFieldOfView(InitialFOV);
 		PhotoCameraRotation = GetActorRotation();
 		CameraSpringArm->SetRelativeRotation(PhotoCameraRotation);
+		MaxRotationAngle = CameraSpringArm->GetRelativeRotation().Yaw + RotationAngleBoundaries;
 	}
 	else
 	{

@@ -65,10 +65,15 @@ private:
 	float SpringArmLength;
 	
 	UPROPERTY(EditAnywhere)
-	float RotationSpeed = 0.5f;
+	float RotationSpeed = 2.f;
 	
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 50.f;
+	
+	UPROPERTY(EditAnywhere)
+	float RotationAngleBoundaries = 80.f;
+
+	float MaxRotationAngle;
 
 	UPROPERTY(EditAnywhere)
 	float ZoomSpeed = 0.5f;
