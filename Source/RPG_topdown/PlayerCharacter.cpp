@@ -6,6 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include <Kismet/GameplayStatics.h>
+#include "PhotographerGameMode.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -183,6 +184,8 @@ void APlayerCharacter::TakePhoto()
 		if (FileManager.Move(*FullFilePath, *FPaths::ScreenShotDir()))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Photo saved succesfully on: %s"), *FullFilePath);
+			APhotographerGameMode* GameMode = GetWorld()->GetAuthGameMode<APhotographerGameMode>();
+			GameMode->AddPhoto();
 		}
 		else
 		{
