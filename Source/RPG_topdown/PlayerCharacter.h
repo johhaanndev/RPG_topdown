@@ -39,6 +39,7 @@ public:
 
 private:
 	const FString PhotoFilename = FString(TEXT("Photo_"));
+	const float RotationAngleBoundaries = 80.f;
 
 	void MoveVertical(float AxisValue);
 	void MoveHorizontal(float AxisValue);
@@ -51,6 +52,8 @@ private:
 
 	void SwitchPhotoMode();
 	void TakePhoto();
+
+	void ShowPhotosDisplayHUD();
 
 	FRotator CurrentRotation;
 	FRotator TargetRotation;
@@ -70,9 +73,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 50.f;
 	
-	UPROPERTY(EditAnywhere)
-	float RotationAngleBoundaries = 80.f;
-
 	float MaxRotationAngle;
 
 	UPROPERTY(EditAnywhere)

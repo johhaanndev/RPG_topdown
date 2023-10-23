@@ -7,6 +7,6 @@ void APhotographerGameMode::AddPhoto()
 {
 	NumPhotos++;
 
-	UE_LOG(LogTemp, Warning, TEXT("Number of Photos taken: %f"), NumPhotos);
+	UE_LOG(LogTemp, Warning, TEXT("Number of Photos taken: %d"), NumPhotos);
 
 }

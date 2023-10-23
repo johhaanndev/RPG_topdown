@@ -7,6 +7,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include <Kismet/GameplayStatics.h>
 #include "PhotographerGameMode.h"
+#include "PlayerCharacterController.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -58,6 +59,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	PlayerInputComponent->BindAction(TEXT("PhotoMode"), EInputEvent::IE_Pressed, this, &APlayerCharacter::SwitchPhotoMode);
 	PlayerInputComponent->BindAction(TEXT("TakePhoto"), EInputEvent::IE_Pressed, this, &APlayerCharacter::TakePhoto);
+
+	PlayerInputComponent->BindAction(TEXT("ShowPhotoDisplayHUD"), EInputEvent::IE_Pressed, this, &APlayerCharacter::ShowPhotosDisplayHUD);
 }
 
 void APlayerCharacter::MoveVertical(float AxisValue)
@@ -116,8 +119,8 @@ void APlayerCharacter::LookRightRate(float AxisValue)
 		NewRotation.Yaw += AxisValue * RotationRate * GetWorld()->GetDeltaSeconds();
 		NewRotation.Yaw = FMath::Clamp(
 										NewRotation.Yaw, 
-										-MaxRotationAngle,
-										MaxRotationAngle
+										MaxRotationAngle,
+										MaxRotationAngle + 160.f
 									);
 		CameraSpringArm->SetRelativeRotation(NewRotation);
 	}
@@ -154,7 +157,7 @@ void APlayerCharacter::SwitchPhotoMode()
 		MainCamera->SetFieldOfView(InitialFOV);
 		PhotoCameraRotation = GetActorRotation();
 		CameraSpringArm->SetRelativeRotation(PhotoCameraRotation);
-		MaxRotationAngle = CameraSpringArm->GetRelativeRotation().Yaw + RotationAngleBoundaries;
+		MaxRotationAngle = CameraSpringArm->GetRelativeRotation().Yaw - RotationAngleBoundaries;
 	}
 	else
 	{
@@ -194,7 +197,22 @@ void APlayerCharacter::TakePhoto()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Photo only available on PhotoMode"));
+		UE_LOG(LogTemp, Error, TEXT("Photo only available on PhotoMode"));
+	}
+}
+
+void APlayerCharacter::ShowPhotosDisplayHUD()
+{
+	UE_LOG(LogTemp, Warning, TEXT("ShowPhotosDisplayHUD from APlayerCharacter.cpp"));
+	APlayerCharacterController* PlayerController = Cast<APlayerCharacterController>(GetController());
+	if (PlayerController)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PlayerController found: %s"), *PlayerController->GetName());
+		PlayerController->ShowPhotoDisplayHUD();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to get PlayerController"));
 	}
 }
 
