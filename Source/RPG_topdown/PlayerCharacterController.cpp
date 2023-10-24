@@ -11,11 +11,18 @@ void APlayerCharacterController::BeginPlay()
 
 void APlayerCharacterController::ShowPhotoDisplayHUD()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Show Photo display HUD"));
-	UUserWidget* PhotosDisplayScreen = CreateWidget(this, PhotosDisplayClass);
-	if (PhotosDisplayScreen != nullptr)
+	if (PhotosDisplay)
 	{
-		PhotosDisplayScreen->AddToViewport();
+		UE_LOG(LogTemp, Warning, TEXT("Photos Display is already enabled"));
+		PhotosDisplay->RemoveFromViewport();
+		PhotosDisplay = nullptr;
+		return;
+	}
+
+	PhotosDisplay = CreateWidget(this, PhotosDisplayClass);
+	if (PhotosDisplay != nullptr)
+	{
+		PhotosDisplay->AddToViewport();
 	}
 }
 

@@ -121,10 +121,10 @@ void APlayerCharacter::LookRightRate(float AxisValue)
 		FRotator NewRotation = CameraSpringArm->GetRelativeRotation();
 		NewRotation.Yaw += AxisValue * RotationRate * GetWorld()->GetDeltaSeconds();
 		NewRotation.Yaw = FMath::Clamp(
-										NewRotation.Yaw, 
-										MaxRotationAngle,
-										MaxRotationAngle + 160.f
-									);
+			NewRotation.Yaw,
+			MaxRotationAngle,
+			MaxRotationAngle + 160.f
+		);
 		CameraSpringArm->SetRelativeRotation(NewRotation);
 	}
 }
@@ -212,17 +212,16 @@ void APlayerCharacter::ShowPhotosDisplayHUD()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ShowPhotosDisplayHUD from APlayerCharacter.cpp"));
 	APlayerCharacterController* PlayerController = Cast<APlayerCharacterController>(GetController());
-	if (PlayerController)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController found: %s"), *PlayerController->GetName());
-		GameState = GameStates::PhotoDisplaying;
-		UE_LOG(LogTemp, Warning, TEXT("Switched to state: %d"), GameState);
-		PlayerController->ShowPhotoDisplayHUD();
-	}
-	else
+	if (!PlayerController)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Failed to get PlayerController"));
+		return;
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("PlayerController found: %s"), *PlayerController->GetName());
+
+	UE_LOG(LogTemp, Warning, TEXT("Switched to state: %d"), GameState);
+	PlayerController->ShowPhotoDisplayHUD();
 }
 
 
