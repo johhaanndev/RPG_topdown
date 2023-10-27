@@ -23,7 +23,7 @@ protected:
 
 public:	
 	
-	enum GameStates { Exploring, PhotoTaking, PhotoDisplaying };
+	enum GameStates { Exploring, PhotoDisplaying };
 	GameStates GameState;
 
 	// Called every frame

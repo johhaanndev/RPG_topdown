@@ -17,7 +17,7 @@ public:
 	void AddPhoto(FString PathToFile, FString FileName);
 	void AddPhotoToPhotosArray(FString PhotoName);
 	void RemovePhotoFromPhotosArray(FString PhotoName);
-
+	int32 GetNumberOfPhotos();
 
 private:
 	TArray<FString> PhotosArray;

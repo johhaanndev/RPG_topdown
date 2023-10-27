@@ -21,7 +21,7 @@ public:
     UPROPERTY(EditAnywhere)
     class UImage* ImageWidget;
 
-    void LoadImageFromPath();
+    void InitializePhotosArray();
 
 private:
     TArray<FString> PhotosArray;

@@ -3,6 +3,7 @@
 
 #include "PlayerCharacterController.h"
 #include "Blueprint/UserWidget.h"
+#include "PhotographerGameMode.h"
 
 void APlayerCharacterController::BeginPlay()
 {
@@ -22,6 +23,8 @@ void APlayerCharacterController::ShowPhotoDisplayHUD()
 	PhotosDisplay = CreateWidget(this, PhotosDisplayClass);
 	if (PhotosDisplay != nullptr)
 	{
+		APhotographerGameMode* GameMode = GetWorld()->GetAuthGameMode<APhotographerGameMode>();
+		UE_LOG(LogTemp, Warning, TEXT("Show display enabled. Number of photos to show: %d"), GameMode->GetNumberOfPhotos());
 		PhotosDisplay->AddToViewport();
 	}
 }

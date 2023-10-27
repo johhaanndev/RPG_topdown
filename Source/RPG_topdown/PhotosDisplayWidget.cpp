@@ -9,15 +9,10 @@
 UPhotosDisplayWidget::UPhotosDisplayWidget(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
-    //UE_LOG(LogTemp, Warning, TEXT("PhotoPath from constructor: %s"), *PhotoPath);
-    LoadImageFromPath();
+
 }
 
-void UPhotosDisplayWidget::LoadImageFromPath()
+void UPhotosDisplayWidget::InitializePhotosArray()
 {
-    /*IFileManager* _FileManager = &IFileManager::Get();
-    TArray<FString> Files;
-    const TCHAR* extension = _T("*.png");
-    _FileManager->FindFilesRecursive(Files, *PhotoPath, extension, true, false, false);*/
-
+    
 }

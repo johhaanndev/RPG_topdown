@@ -22,3 +22,8 @@ void APhotographerGameMode::RemovePhotoFromPhotosArray(FString PhotoName)
 	UE_LOG(LogTemp, Warning, TEXT("Photo removed from list. Number of elements: %d"), PhotosArray.Num());
 }
 
+int32 APhotographerGameMode::GetNumberOfPhotos()
+{
+	return PhotosArray.Num();
+}
+

@@ -155,7 +155,7 @@ void APlayerCharacter::SwitchPhotoMode()
 
 	if (IsPhotoMode)
 	{
-		GameState = GameStates::PhotoTaking;
+		GameState = GameStates::Exploring;
 		CameraSpringArm->TargetArmLength = -10.f;
 		CurrentFOV = 90.0f;
 		MainCamera->SetFieldOfView(InitialFOV);
