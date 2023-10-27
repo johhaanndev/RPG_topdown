@@ -15,7 +15,7 @@ class RPG_TOPDOWN_API APlayerCharacterController : public APlayerController
 	GENERATED_BODY()
 
 public:
-	void ShowPhotoDisplayHUD();
+	bool ShowPhotoDisplayHUD();
 
 protected:
 	// Called when the game starts or when spawned

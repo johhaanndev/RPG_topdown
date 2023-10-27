@@ -10,14 +10,14 @@ void APlayerCharacterController::BeginPlay()
 	
 }
 
-void APlayerCharacterController::ShowPhotoDisplayHUD()
+bool APlayerCharacterController::ShowPhotoDisplayHUD()
 {
 	if (PhotosDisplay)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Photos Display is already enabled"));
 		PhotosDisplay->RemoveFromViewport();
 		PhotosDisplay = nullptr;
-		return;
+		return false;
 	}
 
 	PhotosDisplay = CreateWidget(this, PhotosDisplayClass);
@@ -27,5 +27,6 @@ void APlayerCharacterController::ShowPhotoDisplayHUD()
 		UE_LOG(LogTemp, Warning, TEXT("Show display enabled. Number of photos to show: %d"), GameMode->GetNumberOfPhotos());
 		PhotosDisplay->AddToViewport();
 	}
+	return true;
 }
 

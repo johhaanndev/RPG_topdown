@@ -68,7 +68,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlayerCharacter::MoveVertical(float AxisValue)
 {
-	if (!IsPhotoMode)
+	if (!IsPhotoMode && GameState == GameStates::Exploring)
 	{
 		FVector VerticalMovement = FVector::ForwardVector * AxisValue;
 		if (VerticalMovement.Length() > 0.25f)
@@ -80,7 +80,7 @@ void APlayerCharacter::MoveVertical(float AxisValue)
 
 void APlayerCharacter::MoveHorizontal(float AxisValue)
 {
-	if (!IsPhotoMode)
+	if (!IsPhotoMode && GameState == GameStates::Exploring)
 	{
 		FVector HorizontalMovement = FVector::RightVector * AxisValue;
 		if (HorizontalMovement.Length() > 0.25f)
@@ -92,7 +92,7 @@ void APlayerCharacter::MoveHorizontal(float AxisValue)
 
 void APlayerCharacter::RotateCharacter(float DeltaTime)
 {
-	if (!IsPhotoMode)
+	if (!IsPhotoMode && GameState == GameStates::Exploring)
 	{
 		FVector Velocity = GetVelocity().GetSafeNormal();
 		if (FMath::Abs(Velocity.X) > 0.2f || FMath::Abs(Velocity.Y) > 0.2f)
@@ -105,7 +105,7 @@ void APlayerCharacter::RotateCharacter(float DeltaTime)
 
 void APlayerCharacter::LookUpRate(float AxisValue)
 {
-	if (IsPhotoMode)
+	if (IsPhotoMode && GameState == GameStates::Exploring)
 	{
 		FRotator NewRotation = CameraSpringArm->GetRelativeRotation();
 		NewRotation.Pitch += -AxisValue * RotationRate * GetWorld()->GetDeltaSeconds();
@@ -116,7 +116,7 @@ void APlayerCharacter::LookUpRate(float AxisValue)
 
 void APlayerCharacter::LookRightRate(float AxisValue)
 {
-	if (IsPhotoMode)
+	if (IsPhotoMode && GameState == GameStates::Exploring)
 	{
 		FRotator NewRotation = CameraSpringArm->GetRelativeRotation();
 		NewRotation.Yaw += AxisValue * RotationRate * GetWorld()->GetDeltaSeconds();
@@ -131,7 +131,7 @@ void APlayerCharacter::LookRightRate(float AxisValue)
 
 void APlayerCharacter::ZoomIn(float AxisValue)
 {
-	if (IsPhotoMode)
+	if (IsPhotoMode && GameState == GameStates::Exploring)
 	{
 		CurrentFOV -= ZoomSpeed * AxisValue;
 		CurrentFOV = FMath::Clamp(CurrentFOV, MinFOV, InitialFOV);
@@ -141,7 +141,7 @@ void APlayerCharacter::ZoomIn(float AxisValue)
 
 void APlayerCharacter::ZoomOut(float AxisValue)
 {
-	if (IsPhotoMode)
+	if (IsPhotoMode && GameState == GameStates::Exploring)
 	{
 		CurrentFOV += ZoomSpeed * AxisValue;
 		CurrentFOV = FMath::Clamp(CurrentFOV, MinFOV, InitialFOV);
@@ -151,11 +151,16 @@ void APlayerCharacter::ZoomOut(float AxisValue)
 
 void APlayerCharacter::SwitchPhotoMode()
 {
+	if (GameState == GameStates::PhotoDisplaying)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PhotoMode is unavailable. Disable HUD first."));
+		return;
+	}
+
 	IsPhotoMode = !IsPhotoMode;
 
 	if (IsPhotoMode)
 	{
-		GameState = GameStates::Exploring;
 		CameraSpringArm->TargetArmLength = -10.f;
 		CurrentFOV = 90.0f;
 		MainCamera->SetFieldOfView(InitialFOV);
@@ -165,7 +170,6 @@ void APlayerCharacter::SwitchPhotoMode()
 	}
 	else
 	{
-		GameState = GameStates::Exploring;
 		CameraSpringArm->TargetArmLength = 1000.f;
 		MainCamera->SetFieldOfView(InitialFOV);
 		CameraSpringArm->SetRelativeRotation(TopDownCameraRotation);
@@ -178,7 +182,7 @@ void APlayerCharacter::TakePhoto()
 {
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 
-	if (PlayerController && IsPhotoMode)
+	if (PlayerController && IsPhotoMode && GameState == GameStates::Exploring)
 	{
 		FString now = FDateTime::Now().ToString(TEXT("%Y%m%d%H%M%S"));
 		FString FullFilePath = PhotosDirectory + "/" + now;
@@ -206,7 +210,7 @@ void APlayerCharacter::TakePhoto()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Photo only available on PhotoMode"));
+		UE_LOG(LogTemp, Error, TEXT("Photo only available on PhotoMode and if photo display is disabled"));
 	}
 }
 
@@ -223,7 +227,10 @@ void APlayerCharacter::ShowPhotosDisplayHUD()
 	UE_LOG(LogTemp, Warning, TEXT("PlayerController found: %s"), *PlayerController->GetName());
 
 	UE_LOG(LogTemp, Warning, TEXT("Switched to state: %d"), GameState);
-	PlayerController->ShowPhotoDisplayHUD();
+	if (PlayerController->ShowPhotoDisplayHUD())
+		GameState = GameStates::PhotoDisplaying;
+	else
+		GameState = GameStates::Exploring;
 }
 
 
