@@ -21,13 +21,3 @@ void UPhotosDisplayWidget::LoadImageFromPath()
     _FileManager->FindFilesRecursive(Files, *PhotoPath, extension, true, false, false);*/
 
 }
-
-void UPhotosDisplayWidget::AddPhotoToPhotosArray(FString PhotoName)
-{
-    PhotosArray.Add(PhotoName);
-}
-
-void UPhotosDisplayWidget::RemovePhotoFromPhotosArray(FString PhotoName)
-{
-    PhotosArray.Remove(PhotoName);
-}

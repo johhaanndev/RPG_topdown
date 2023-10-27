@@ -3,10 +3,22 @@
 
 #include "PhotographerGameMode.h"
 
-void APhotographerGameMode::AddPhoto()
+void APhotographerGameMode::AddPhoto(FString PathToFile, FString FileName)
 {
 	NumPhotos++;
-
-	UE_LOG(LogTemp, Warning, TEXT("Number of Photos taken: %d"), NumPhotos);
+	AddPhotoToPhotosArray(PathToFile + "/" + FileName);
 
 }
+
+void APhotographerGameMode::AddPhotoToPhotosArray(FString stringValue)
+{
+	PhotosArray.Add(stringValue);
+	UE_LOG(LogTemp, Warning, TEXT("Photo added to list. Number of elements: %d"), PhotosArray.Num());
+}
+
+void APhotographerGameMode::RemovePhotoFromPhotosArray(FString PhotoName)
+{
+	PhotosArray.Remove(PhotoName);
+	UE_LOG(LogTemp, Warning, TEXT("Photo removed from list. Number of elements: %d"), PhotosArray.Num());
+}
+

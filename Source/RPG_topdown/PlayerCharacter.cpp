@@ -197,7 +197,7 @@ void APlayerCharacter::TakePhoto()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Photo saved succesfully on: %s"), *FullFilePath);
 			APhotographerGameMode* GameMode = GetWorld()->GetAuthGameMode<APhotographerGameMode>();
-			GameMode->AddPhoto();
+			GameMode->AddPhoto(FullFilePath, FileName);
 		}
 		else
 		{

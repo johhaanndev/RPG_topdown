@@ -22,8 +22,6 @@ public:
     class UImage* ImageWidget;
 
     void LoadImageFromPath();
-    void AddPhotoToPhotosArray(FString PhotoName);
-    void RemovePhotoFromPhotosArray(FString PhotoName);
 
 private:
     TArray<FString> PhotosArray;

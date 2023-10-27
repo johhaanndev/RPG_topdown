@@ -14,9 +14,12 @@ class RPG_TOPDOWN_API APhotographerGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 public:
+	void AddPhoto(FString PathToFile, FString FileName);
+	void AddPhotoToPhotosArray(FString PhotoName);
+	void RemovePhotoFromPhotosArray(FString PhotoName);
 
 
-	void AddPhoto();
-
+private:
+	TArray<FString> PhotosArray;
 	int NumPhotos = 0;
 };
