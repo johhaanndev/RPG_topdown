@@ -180,11 +180,13 @@ void APlayerCharacter::TakePhoto()
 
 	if (PlayerController && IsPhotoMode)
 	{
-		// Genera la ruta completa del archivo de imagen.
-		FString FullFilePath = PhotosDirectory + "/" + FDateTime::Now().ToString(TEXT("%Y%m%d%H%M%S"));
+		FString now = FDateTime::Now().ToString(TEXT("%Y%m%d%H%M%S"));
+		FString FullFilePath = PhotosDirectory + "/" + now;
+		CurrentNumberOfPhotos++;
 
-		// Ejecuta el comando HighResShot para capturar la pantalla.
-		FString Command = FString::Printf(TEXT("HighResShot 1920x1080"));
+		FString FileName = FString::Printf(TEXT("photo_%s"), *now);
+
+		FString Command = FString::Printf(TEXT("HighResShot 1920x1080 filename=%s"), *FileName);
 		PlayerController->ConsoleCommand(Command, true);
 
 		//FPlatformProcess::Sleep(2.0f);

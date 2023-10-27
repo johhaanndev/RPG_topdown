@@ -15,6 +15,7 @@ class RPG_TOPDOWN_API APhotographerGameMode : public AGameModeBase
 	GENERATED_BODY()
 public:
 
+
 	void AddPhoto();
 
 	int NumPhotos = 0;

@@ -22,7 +22,9 @@ public:
     class UImage* ImageWidget;
 
     void LoadImageFromPath();
+    void AddPhotoToPhotosArray(FString PhotoName);
+    void RemovePhotoFromPhotosArray(FString PhotoName);
 
 private:
-    FString PhotoPath = FPaths::ProjectDir() + TEXT("Photos/HighresScreenshot00000.png");
+    TArray<FString> PhotosArray;
 };
