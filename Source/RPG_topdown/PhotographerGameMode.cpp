@@ -56,7 +56,7 @@ void APhotographerGameMode::AppendPhotoToFile(FString PhotoManagementFile, FStri
 	AllPhotosString = ReadPhotoFromFile(PhotoManagementFile);
 	if (AllPhotosString != "ERROR")
 	{
-		AllPhotosString = AllPhotosString + TEXT(", ") + FileToAdd;
+		AllPhotosString = AllPhotosString.IsEmpty() ? FileToAdd : AllPhotosString + TEXT(", ") + FileToAdd;
 		UE_LOG(LogTemp, Warning, TEXT("Append() AllPhotosString content = %s"), *AllPhotosString);
 
 		if (FFileHelper::SaveStringToFile(AllPhotosString, *PhotoManagementFile))
