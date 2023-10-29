@@ -7,7 +7,14 @@
 
 void APlayerCharacterController::BeginPlay()
 {
+	APhotographerGameMode* GameMode = GetWorld()->GetAuthGameMode<APhotographerGameMode>();
+	if (GameMode == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("GameMode not found"));
+		return;
+	}
 	
+	GameMode->InitializePhotoManagement(*PhotosManagementFile);
 }
 
 bool APlayerCharacterController::ShowPhotoDisplayHUD()

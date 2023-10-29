@@ -27,4 +27,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	UUserWidget* PhotosDisplay;
+
+	UPROPERTY(VisibleAnywhere)
+	FString PhotosManagementFile = FPaths::ProjectDir() / TEXT("PhotosManagement/PhotosTextFile.txt");
 };
