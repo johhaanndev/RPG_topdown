@@ -186,7 +186,6 @@ void APlayerCharacter::TakePhoto()
 	{
 		FString now = FDateTime::Now().ToString(TEXT("%Y%m%d%H%M%S"));
 		FString FullFilePath = PhotosDirectory + "/" + now;
-		CurrentNumberOfPhotos++;
 
 		FString FileName = FString::Printf(TEXT("photo_%s"), *now);
 

@@ -92,6 +92,4 @@ private:
 
 	bool IsPhotoMode = false;
 
-	int32 CurrentNumberOfPhotos = 0;
-
 };

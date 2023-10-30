@@ -26,7 +26,13 @@ private:
 	TSubclassOf<class UUserWidget> PhotosDisplayClass;
 
 	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UPhotosDisplayWidget> PhotosDisplayWidgetClass;
+
+	UPROPERTY(EditAnywhere)
 	UUserWidget* PhotosDisplay;
+
+	UPROPERTY(EditAnywhere)
+	class UPhotosDisplayWidget* PhotosDisplayWidget;
 
 	UPROPERTY(VisibleAnywhere)
 	FString PhotosManagementFile = FPaths::ProjectDir() / TEXT("PhotosManagement/PhotosTextFile.txt");

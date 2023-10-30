@@ -19,12 +19,13 @@ public:
 	void AddPhoto(FString PathToFile, FString FileName);
 	void AddPhotoToPhotosArray(FString PhotoName);
 	void RemovePhotoFromPhotosArray(FString PhotoName);
-	int32 GetNumberOfPhotos();
-	TArray<FString> GetPhotosArrey() { return PhotosArray; }
+	int32 GetNumberOfPhotos() { return PhotosArray.Num(); }
+	TArray<FString> GetPhotosArray() { return PhotosArray; }
+	FString GetPhotosArraySerialized() { return AllPhotosString; }
 
 	void AppendPhotoToFile(FString PhotoManagementFile, FString FileName);
 	void RemovePhotoFromFile(FString PhotoManagementFile, FString Filename);
-	FString ReadPhotoFromFile(FString PhotoManagementFile);
+	FString ReadContentFromFile(FString PhotoManagementFile);
 
 private:
 	TArray<FString> PhotosArray;

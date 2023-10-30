@@ -17,8 +17,10 @@ void APhotographerGameMode::InitializePhotoManagement(FString PhotoManagementFil
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("File Content:\n%s"), *FileContent);
+			UE_LOG(LogTemp, Warning, TEXT("Initial File Content:\n%s"), *FileContent);
 			AllPhotosString = FileContent;
+			AllPhotosString.ParseIntoArray(PhotosArray, TEXT(","), true);
+			UE_LOG(LogTemp, Warning, TEXT("Initial Array count: %d"), PhotosArray.Num());
 		}
 	}
 	else
@@ -29,8 +31,8 @@ void APhotographerGameMode::InitializePhotoManagement(FString PhotoManagementFil
 
 void APhotographerGameMode::AddPhoto(FString PathToFile, FString FileName)
 {
-	NumPhotos++;
-	AddPhotoToPhotosArray(PathToFile + "/" + FileName);
+	AddPhotoToPhotosArray(PathToFile + "/" + FileName + ".png");
+
 }
 
 void APhotographerGameMode::AddPhotoToPhotosArray(FString stringValue)
@@ -46,23 +48,17 @@ void APhotographerGameMode::RemovePhotoFromPhotosArray(FString PhotoName)
 	UE_LOG(LogTemp, Warning, TEXT("Photo removed from list. Number of elements: %d"), PhotosArray.Num());
 }
 
-int32 APhotographerGameMode::GetNumberOfPhotos()
-{
-	return PhotosArray.Num();
-}
-
 void APhotographerGameMode::AppendPhotoToFile(FString PhotoManagementFile, FString FileToAdd)
 {
-	AllPhotosString = ReadPhotoFromFile(PhotoManagementFile);
+	AllPhotosString = ReadContentFromFile(PhotoManagementFile);
 	if (AllPhotosString != "ERROR")
 	{
-		AllPhotosString = AllPhotosString.IsEmpty() ? FileToAdd : AllPhotosString + TEXT(", ") + FileToAdd;
+		AllPhotosString = AllPhotosString.IsEmpty() ? FileToAdd : AllPhotosString + TEXT(",") + FileToAdd;
 		UE_LOG(LogTemp, Warning, TEXT("Append() AllPhotosString content = %s"), *AllPhotosString);
 
 		if (FFileHelper::SaveStringToFile(AllPhotosString, *PhotoManagementFile))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("succesfully added photo file name = %s"), *AllPhotosString);
-
 		}
 		else
 		{
@@ -79,7 +75,7 @@ void APhotographerGameMode::RemovePhotoFromFile(FString PhotoManagementFile, FSt
 {
 }
 
-FString APhotographerGameMode::ReadPhotoFromFile(FString PhotoManagementFile)
+FString APhotographerGameMode::ReadContentFromFile(FString PhotoManagementFile)
 {
 	if (FPaths::FileExists(*PhotoManagementFile))
 	{

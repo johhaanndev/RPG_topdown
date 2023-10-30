@@ -4,6 +4,7 @@
 #include "PlayerCharacterController.h"
 #include "Blueprint/UserWidget.h"
 #include "PhotographerGameMode.h"
+#include "PhotosDisplayWidget.h"
 
 void APlayerCharacterController::BeginPlay()
 {
@@ -19,20 +20,21 @@ void APlayerCharacterController::BeginPlay()
 
 bool APlayerCharacterController::ShowPhotoDisplayHUD()
 {
-	if (PhotosDisplay)
+	if (PhotosDisplayWidget)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Photos Display is already enabled"));
-		PhotosDisplay->RemoveFromViewport();
-		PhotosDisplay = nullptr;
+		PhotosDisplayWidget->RemoveFromViewport();
+		PhotosDisplayWidget = nullptr;
 		return false;
 	}
 
-	PhotosDisplay = CreateWidget(this, PhotosDisplayClass);
-	if (PhotosDisplay != nullptr)
+	PhotosDisplayWidget = Cast<UPhotosDisplayWidget>(CreateWidget(this, PhotosDisplayWidgetClass));
+	if (PhotosDisplayWidget != nullptr)
 	{
 		APhotographerGameMode* GameMode = GetWorld()->GetAuthGameMode<APhotographerGameMode>();
 		UE_LOG(LogTemp, Warning, TEXT("Show display enabled. Number of photos to show: %d"), GameMode->GetNumberOfPhotos());
-		PhotosDisplay->AddToViewport();
+		PhotosDisplayWidget->InitializePhotosWidget(GameMode->GetPhotosArraySerialized());
+		PhotosDisplayWidget->AddToViewport();
 	}
 	return true;
 }
