@@ -49,3 +49,27 @@ UTexture2D* UPhotosDisplayWidget::LoadTextureFromPath(const FString& ImagePath)
 
     return nullptr;
 }
+
+void UPhotosDisplayWidget::BrowseNextPhoto(bool IsNext)
+{
+    UE_LOG(LogTemp, Warning, TEXT("Browsing. PhotosIndex = %d"), PhotosIndex);
+    if (IsNext)
+    {
+        PhotosIndex++;
+        if (PhotosIndex >= PhotosArray.Num())
+        {
+            PhotosIndex = 0;
+            UE_LOG(LogTemp, Warning, TEXT("Reached last photo. Restart to PhotosIndex = %d"), PhotosIndex);
+        }
+    }
+    else
+    {
+        PhotosIndex--;
+        if (PhotosIndex < 0)
+        {
+            PhotosIndex = PhotosArray.Num() - 1;
+            UE_LOG(LogTemp, Warning, TEXT("Reached first photo. Dsiplay last photo. PhotosIndex = %d"), PhotosIndex);
+        }
+    }
+    
+}

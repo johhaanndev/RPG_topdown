@@ -39,3 +39,16 @@ bool APlayerCharacterController::ShowPhotoDisplayHUD()
 	return true;
 }
 
+void APlayerCharacterController::BrowsePhoto(bool IsNext)
+{
+	if (PhotosDisplayWidget)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Display found, browsing..."));
+		PhotosDisplayWidget->BrowseNextPhoto(IsNext);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Photos Display not found"));
+	}
+}
+

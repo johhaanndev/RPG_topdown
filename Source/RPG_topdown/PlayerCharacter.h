@@ -58,6 +58,8 @@ private:
 	void TakePhoto();
 
 	void ShowPhotosDisplayHUD();
+	void NextPhoto();
+	void PreviousPhoto();
 
 	FRotator CurrentRotation;
 	FRotator TargetRotation;

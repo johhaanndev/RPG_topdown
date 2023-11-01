@@ -64,6 +64,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction(TEXT("TakePhoto"), EInputEvent::IE_Pressed, this, &APlayerCharacter::TakePhoto);
 
 	PlayerInputComponent->BindAction(TEXT("ShowPhotoDisplayHUD"), EInputEvent::IE_Pressed, this, &APlayerCharacter::ShowPhotosDisplayHUD);
+	PlayerInputComponent->BindAction(TEXT("NextPhoto"), EInputEvent::IE_Pressed, this, &APlayerCharacter::NextPhoto);
+	PlayerInputComponent->BindAction(TEXT("PrevPhoto"), EInputEvent::IE_Pressed, this, &APlayerCharacter::PreviousPhoto);
 }
 
 void APlayerCharacter::MoveVertical(float AxisValue)
@@ -232,4 +234,35 @@ void APlayerCharacter::ShowPhotosDisplayHUD()
 		GameState = GameStates::Exploring;
 }
 
+void APlayerCharacter::NextPhoto()
+{
+	if (GameState != GameStates::PhotoDisplaying)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NextPhoto only available when PhotoDisplaying"));
+		return;
+	}
+
+	APlayerCharacterController* PlayerController = Cast<APlayerCharacterController>(GetController());
+	if (PlayerController)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Next Photo"));
+		PlayerController->BrowsePhoto(true);
+	}
+}
+
+void APlayerCharacter::PreviousPhoto()
+{
+	if (GameState != GameStates::PhotoDisplaying)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NextPhoto only available when PhotoDisplaying"));
+		return;
+	}
+
+	APlayerCharacterController* PlayerController = Cast<APlayerCharacterController>(GetController());
+	if (PlayerController)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Previous Photo"));
+		PlayerController->BrowsePhoto(false);
+	}
+}
 

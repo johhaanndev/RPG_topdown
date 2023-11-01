@@ -18,17 +18,14 @@ public:
     UPhotosDisplayWidget(const FObjectInitializer& ObjectInitializer);
 
 public:
-    /*UPROPERTY(EditAnywhere)
-    TSubclassOf<class UImage> PhotoViewerClass;
-    UPROPERTY(EditAnywhere)
-    class UImage* PhotoViewer;*/
-
     void InitializePhotosWidget(FString PhotosSerialized);
 
     UTexture2D* LoadTextureFromPath(const FString& ImagePath);
 
+    void BrowseNextPhoto(bool IsNext);
+
 private:
 
     TArray<FString> PhotosArray;
-
+    int32 PhotosIndex = 0;
 };
