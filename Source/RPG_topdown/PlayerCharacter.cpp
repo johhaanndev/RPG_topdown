@@ -187,7 +187,7 @@ void APlayerCharacter::TakePhoto()
 		FString now = FDateTime::Now().ToString(TEXT("%Y%m%d%H%M%S"));
 		FString FullFilePath = PhotosDirectory + "/" + now;
 
-		FString FileName = FString::Printf(TEXT("photo_%s"), *now);
+		FString FileName = FString::Printf(TEXT("photo"));
 
 		FString Command = FString::Printf(TEXT("HighResShot 1920x1080 filename=%s"), *FileName);
 		PlayerController->ConsoleCommand(Command, true);
