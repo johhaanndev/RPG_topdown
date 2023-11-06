@@ -19,11 +19,12 @@ public:
 
 public:
     void InitializePhotosWidget(FString PhotosSerialized);
+    void SetTextureToBrush(int32 Index);
 
     UTexture2D* LoadTextureFromPath(const FString& ImagePath);
 
     void BrowseNextPhoto(bool IsNext);
-
+    
 private:
 
     TArray<FString> PhotosArray;
