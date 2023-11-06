@@ -122,11 +122,7 @@ void APlayerCharacter::LookRightRate(float AxisValue)
 	{
 		FRotator NewRotation = CameraSpringArm->GetRelativeRotation();
 		NewRotation.Yaw += AxisValue * RotationRate * GetWorld()->GetDeltaSeconds();
-		NewRotation.Yaw = FMath::Clamp(
-			NewRotation.Yaw,
-			MaxRotationAngle,
-			MaxRotationAngle + 160.f
-		);
+		
 		CameraSpringArm->SetRelativeRotation(NewRotation);
 	}
 }
