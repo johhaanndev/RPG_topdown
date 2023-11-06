@@ -31,7 +31,7 @@ void APhotographerGameMode::InitializePhotoManagement(FString PhotoManagementFil
 
 void APhotographerGameMode::AddPhoto(FString PathToFile, FString FileName)
 {
-	AddPhotoToPhotosArray(PathToFile + "/" + FileName + ".png");
+	AddPhotoToPhotosArray(PathToFile + FileName + ".png");
 
 }
 

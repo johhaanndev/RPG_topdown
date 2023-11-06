@@ -182,28 +182,28 @@ void APlayerCharacter::TakePhoto()
 
 	if (PlayerController && IsPhotoMode && GameState == GameStates::Exploring)
 	{
+		IFileManager& FileManager = IFileManager::Get();
 		FString now = FDateTime::Now().ToString(TEXT("%Y%m%d%H%M%S"));
 		FString FullFilePath = PhotosDirectory + "/" + now;
 
-		FString FileName = FString::Printf(TEXT("photo"));
+		FString FileName = "photo_" + now;
 
 		FString Command = FString::Printf(TEXT("HighResShot 1920x1080 filename=%s"), *FileName);
 		PlayerController->ConsoleCommand(Command, true);
 
 		//FPlatformProcess::Sleep(2.0f);
+		APhotographerGameMode* GameMode = GetWorld()->GetAuthGameMode<APhotographerGameMode>();
+		GameMode->AddPhoto(FPaths::ScreenShotDir(), FileName);
 
 		// Mueve el archivo a la ruta de destino.
-		IFileManager& FileManager = IFileManager::Get();
-		if (FileManager.Move(*FullFilePath, *FPaths::ScreenShotDir()))
+		/*if (FileManager.Move(*FullFilePath, *FPaths::ScreenShotDir()))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Photo saved succesfully on: %s"), *FullFilePath);
-			APhotographerGameMode* GameMode = GetWorld()->GetAuthGameMode<APhotographerGameMode>();
-			GameMode->AddPhoto(FullFilePath, FileName);
 		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Error saving the photo"));
-		}
+		}*/
 	}
 	else
 	{
